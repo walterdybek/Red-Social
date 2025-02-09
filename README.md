@@ -1,2 +1,2 @@
 # Red-Social
-red oscial aplicada a universitarios
+red social aplicada a universitarios
