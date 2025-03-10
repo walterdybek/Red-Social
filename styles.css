@@ -1,0 +1,263 @@
+/* Variables de colores */
+:root {
+    --azul-claro: #4a90e2;
+    --azul-oscuro: #003366;
+    --blanco: #ffffff;
+    --gris-claro: #f5f5f5;
+    --gris-oscuro: #333333;
+    --sombra: rgba(0, 0, 0, 0.1);
+}
+
+/* Reset de márgenes y paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--gris-claro);
+    color: var(--gris-oscuro);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Barra de navegación */
+.navbar {
+    background-color: var(--azul-oscuro);
+    color: var(--blanco);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 4px 6px var(--sombra);
+    z-index: 1000;
+}
+
+.navbar .navbar-logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navbar-search input {
+    padding: 8px;
+    border-radius: 20px;
+    border: none;
+    width: 250px;
+}
+
+.navbar-icons a {
+    color: var(--blanco);
+    margin: 0 10px;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.navbar-icons a:hover {
+    color: var(--azul-claro);
+}
+
+/* Barra lateral */
+.sidebar {
+    background-color: var(--blanco);
+    width: 220px;
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+    box-shadow: 2px 0 5px var(--sombra);
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    color: var(--gris-oscuro);
+    text-decoration: none;
+    padding: 10px 0;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.sidebar a i {
+    margin-right: 10px;
+}
+
+.sidebar a:hover {
+    color: var(--azul-claro);
+}
+
+/* Contenido principal */
+.main-content {
+    margin-left: 240px;
+    margin-top: 80px;
+    padding: 20px;
+    background-color: var(--gris-claro);
+    min-height: 100vh;
+}
+
+/* Encabezado del perfil */
+.profile-header {
+    background: var(--blanco);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px var(--sombra);
+    text-align: center;
+}
+
+.profile-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid var(--azul-oscuro);
+    margin-top: -50px;
+}
+
+/* Formulario de nueva publicación */
+.post-form {
+    background: var(--blanco);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px var(--sombra);
+    margin-bottom: 20px;
+}
+
+.post-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--gris-oscuro);
+}
+
+.post-form button {
+    background: var(--azul-claro);
+    color: var(--blanco);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.post-form button:hover {
+    background: var(--azul-oscuro);
+}
+
+/* Publicaciones */
+.posts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post {
+    background: var(--blanco);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px var(--sombra);
+}
+
+/* Mensajes */
+.message-list {
+    margin-top: 20px;
+}
+
+.message {
+    background: var(--blanco);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--sombra);
+    margin-bottom: 10px;
+}
+
+.message p {
+    margin: 0;
+}
+
+/* Configuración */
+.settings form {
+    background: var(--blanco);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px var(--sombra);
+}
+
+.settings form label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.settings form input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--gris-oscuro);
+    margin-bottom: 10px;
+}
+
+.settings form button {
+    background: var(--azul-claro);
+    color: var(--blanco);
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.settings form button:hover {
+    background: var(--azul-oscuro);
+}
+
+/* Notificaciones */
+.notifications {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification {
+    background: var(--blanco);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--sombra);
+}
+
+/* Botón flotante de chat */
+.chat-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--azul-claro);
+    color: var(--blanco);
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px var(--sombra);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.chat-float:hover {
+    background: var(--azul-oscuro);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+    .main-content {
+        margin-left: 0;
+    }
+
+    .navbar-search input {
+        width: 200px;
+    }
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vito - Red Social</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar">
+        <div class="navbar-logo">Vito</div>
+        <div class="navbar-search">
+            <input type="text" placeholder="Buscar en Vito">
+        </div>
+        <div class="navbar-icons">
+            <a href="#"><i class="fas fa-home"></i></a>
+            <a href="#"><i class="fas fa-user-friends"></i></a>
+            <a href="#"><i class="fas fa-bell"></i></a>
+            <a href="#"><i class="fas fa-cog"></i></a>
+        </div>
+    </nav>
+
+    <!-- Barra lateral -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="profile.jpg" alt="Foto de perfil" class="sidebar-profile-img">
+            <span class="sidebar-username">Bienvenido, Usuario</span>
+        </div>
+        <a href="#"><i class="fas fa-home"></i> Inicio</a>
+        <a href="#"><i class="fas fa-user"></i> Perfil</a>
+        <a href="#"><i class="fas fa-envelope"></i> Mensajes</a>
+        <a href="#"><i class="fas fa-bell"></i> Notificaciones</a>
+        <a href="#"><i class="fas fa-cog"></i> Configuración</a>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+        <section class="post-form">
+            <h3>¿Qué estás pensando?</h3>
+            <textarea id="content" placeholder="Comparte algo con tus amigos..."></textarea>
+            <button onclick="addPost()">Publicar</button>
+        </section>
+
+        <section id="posts" class="posts">
+            <!-- Los posts se cargarán aquí -->
+        </section>
+    </main>
+
+    <!-- Chat flotante -->
+    <div class="chat-float" onclick="toggleChat()">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+
+    <!-- Ventana de chat -->
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <h3>Chat</h3>
+            <button onclick="toggleChat()">Cerrar</button>
+        </div>
+        <div class="chat-body"></div>
+        <div class="chat-footer">
+            <input type="text" placeholder="Escribe un mensaje...">
+            <button>Enviar</button>
+        </div>
+    </div>
+</body>
+</html>
