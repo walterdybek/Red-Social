@@ -1,70 +1,179 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vito - Red Social</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="scripts.js" defer></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <link href="../styles/contact.css" rel="stylesheet"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="../styles/index.css">
+    </head>
 <body>
-    <!-- Barra de navegación -->
-    <nav class="navbar">
-        <div class="navbar-logo">Vito</div>
-        <div class="navbar-search">
-            <input type="text" placeholder="Buscar en Vito">
+    <div class="main-div">
+        <div class="logo">
+            <h1>Uflow</h1>
+            <p>Unete ya a la red social que conecta toda la UFV en una 
+                comunidad <br>digital como nunca antes se había visto!</p>
         </div>
-        <div class="navbar-icons">
-            <a href="#"><i class="fas fa-home"></i></a>
-            <a href="#"><i class="fas fa-user-friends"></i></a>
-            <a href="#"><i class="fas fa-bell"></i></a>
-            <a href="#"><i class="fas fa-cog"></i></a>
-        </div>
-    </nav>
-
-    <!-- Barra lateral -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <img src="profile.jpg" alt="Foto de perfil" class="sidebar-profile-img">
-            <span class="sidebar-username">Bienvenido, Usuario</span>
-        </div>
-        <a href="#"><i class="fas fa-home"></i> Inicio</a>
-        <a href="#"><i class="fas fa-user"></i> Perfil</a>
-        <a href="#"><i class="fas fa-envelope"></i> Mensajes</a>
-        <a href="#"><i class="fas fa-bell"></i> Notificaciones</a>
-        <a href="#"><i class="fas fa-cog"></i> Configuración</a>
-    </aside>
-
-    <!-- Contenido principal -->
-    <main class="main-content">
-        <section class="post-form">
-            <h3>¿Qué estás pensando?</h3>
-            <textarea id="content" placeholder="Comparte algo con tus amigos..."></textarea>
-            <button onclick="addPost()">Publicar</button>
-        </section>
-
-        <section id="posts" class="posts">
-            <!-- Los posts se cargarán aquí -->
-        </section>
-    </main>
-
-    <!-- Chat flotante -->
-    <div class="chat-float" onclick="toggleChat()">
-        <i class="fas fa-comment-dots"></i>
-    </div>
-
-    <!-- Ventana de chat -->
-    <div class="chat-window" id="chatWindow">
-        <div class="chat-header">
-            <h3>Chat</h3>
-            <button onclick="toggleChat()">Cerrar</button>
-        </div>
-        <div class="chat-body"></div>
-        <div class="chat-footer">
-            <input type="text" placeholder="Escribe un mensaje...">
-            <button>Enviar</button>
+        <div class="options">
+            <div class="card">
+                <div class="border-animation"></div>
+                <div class="card-body p-5 text-white">
+                    <h5 class="card-title mb-5">Login</h5>
+                    <div class="mb-3 input-div position-relative">
+                        <input type="email" class="form-control input-class">
+                        <label for="email" class="text-secondary small">Email</label>
+                    </div>
+                    <br>
+                    <div class="mb-3 input-div position-relative">
+                        <input type="password" class="form-control input-class">
+                        <label for="password" class="text-secondary small">Password</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input">
+                        <label for="password" class="form-check-label">Remember me</label>
+                    </div>
+                    <div class="login">
+                        <button id="btnSubmit" class="btn btn-primary float-end" type="submit">Log In</button>
+                    </div>
+                </div>
+            </div>
+            <div class="signup">
+                <p>No tienes una cuenta aun?</p>
+                <button id="btnSignup" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up!</button>
+            </div>
         </div>
     </div>
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+			<div class="modal-content" id="form_container">
+				<div class="modal-header">
+				<h5 class="modal-title" id="signupModalLabel">Registro</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form action="#" method="post">
+						<label for="nombre">Nombre:</label>
+						<input type="text" class="form-control" id="nombre" required>
+						<br>
+						<label for="apellido">Apellidos:</label>
+						<input type="text" class="form-control" id="apellido" required>
+						<br>
+						<label for="email">Correo UFV:</label>
+						<input type="email" class="form-control" id="email" required>
+						<br>
+						<label for="birthdate">Fecha de nacimiento:</label>
+						<input type="date" class="form-control" id="birthdate" required>
+						<br>
+						<label for="password">Contraseña:</label>
+						<input type="password" class="form-control" id="password" required>
+						<br>
+						<label for="password">Repetir contraseña:</label>
+						<input type="password" class="form-control" id="password" required>
+						<div class="contBtn">
+							<input type="submit" class="btn btn-primary" value="Registrarse" id="btnSend">
+						</div>
+					</form>
+				</div>
+			</div>
+        </div>
+    </div>
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++footer++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <footer>
+		<div class="container">
+			<div class="profile">
+				<div class="logo">
+					<a href="">Uflow</a>
+				</div>
+	
+				<!-- Short About -->
+				<p>
+					Red social diseñada para el proyecto transversal de los trompetas
+				</p>
+	
+				<!-- Social Media -->
+				<div class="social-media-container">
+					<div class="social-media">
+						<box-icon color="#fff" type="logo" name="instagram"></box-icon>
+					</div>
+					<div class="social-media">
+						<box-icon color="#fff" name="youtube" type="logo"></box-icon>
+					</div>
+					<div class="social-media">
+						<box-icon color="#fff" name="facebook-circle" type="logo"></box-icon>
+					</div>
+					<div class="social-media">
+						<box-icon color="#fff" type="logo" name="tiktok"></box-icon>
+					</div>
+				</div>
+			</div>
+	
+			<div class="link-container">
+				<div class="information">
+					<h1>Information</h1>
+					<ul>
+						<li>
+							<a href="#">Our Company</a>
+						</li>
+						<li>
+							<a href="#">About Us</a>
+						</li>
+						<li>
+							<a href="#">Blog</a>
+						</li>
+						<li>
+							<a href="#">Shop</a>
+						</li>
+					</ul>
+				</div>
+	
+				<div class="resource">
+					<h1>Resources</h1>
+					<ul>
+						<li>
+							<a href="#">Support 24/7</a>
+						</li>
+						<li>
+							<a href="#">Help Center</a>
+						</li>
+						<li>
+							<a href="#">Terms & Condition</a>
+						</li>
+						<li>
+							<a href="#">How-to Instructions</a>
+						</li>
+					</ul>
+				</div>
+	
+				<div class="navigation">
+					<h1>Navigation</h1>
+					<ul>
+						<li>
+							<a href="#">Home</a>
+						</li>
+						<li>
+							<a href="#">My Profile</a>
+						</li>
+						<li>
+							<a href="#">About Us</a>
+						</li>
+						<li>
+							<a href="#">Contact</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+	crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+
 </body>
 </html>
