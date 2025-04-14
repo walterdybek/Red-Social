@@ -1,102 +1,74 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Feed estilo X</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perfil de Usuario</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      background-color: #f8f9fa;
+    .cover {
+      height: 250px;
+      background: url('https://via.placeholder.com/1200x250') center/cover no-repeat;
     }
-    .tweet {
-      display: flex;
-      padding: 16px;
-      border-bottom: 1px solid #dee2e6;
-      background-color: white;
-    }
-    .avatar {
-      width: 48px;
-      height: 48px;
+    .profile-img {
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
-      object-fit: cover;
-      margin-right: 12px;
-    }
-    .tweet-content {
-      flex: 1;
-    }
-    .tweet-header {
-      font-size: 0.95rem;
-    }
-    .tweet-header strong {
-      margin-right: 6px;
-    }
-    .tweet-text {
-      margin: 4px 0 8px;
-      font-size: 1rem;
-    }
-    .tweet-actions {
-      font-size: 0.9rem;
-      color: #6c757d;
-    }
-    .tweet-actions i {
-      margin-right: 4px;
-    }
-    .tweet-actions button {
-      background: none;
-      border: none;
-      padding: 4px 10px;
-      color: inherit;
-    }
-    .tweet-actions button:hover {
-      color: #0d6efd;
+      border: 5px solid #fff;
+      margin-top: -75px;
     }
   </style>
 </head>
 <body>
 
-  <div class="container" style="max-width: 600px;">
+  <!-- Cover -->
+  <div class="cover"></div>
+
+  <!-- Profile Info -->
+  <div class="container text-center">
+    <img src="../images/walter_el_del_bombo.jpg" alt="Avatar" class="profile-img shadow">
+    <h2 class="mt-2">Walter el del bombo</h2>
+    <p class="text-muted">@juanperez</p>
+    <p>Desarrollador web | Apasionado por la tecnología y el café ☕</p>
     
-    <!-- TWEET 1 -->
-    <div class="tweet">
-      <img src="https://i.pravatar.cc/100?img=10" class="avatar" alt="avatar">
-      <div class="tweet-content">
-        <div class="tweet-header">
-          <strong>Ana Torres</strong><span class="text-muted">@ana_t • 2h</span>
-        </div>
-        <div class="tweet-text">
-          Disfrutando del atardecer 🌅 en la playa. ¡Qué paz!
-        </div>
-        <div class="tweet-actions d-flex justify-content-between">
-          <button><i class="bi bi-chat"></i> 12</button>
-          <button><i class="bi bi-arrow-repeat"></i> 5</button>
-          <button><i class="bi bi-heart"></i> 23</button>
-          <button><i class="bi bi-box-arrow-up"></i></button>
-        </div>
-      </div>
+    <div class="d-flex justify-content-center gap-3 my-3">
+      <button class="btn btn-primary">Seguir</button>
+      <button class="btn btn-outline-secondary">Mensaje</button>
     </div>
 
-    <!-- TWEET 2 -->
-    <div class="tweet">
-      <img src="https://i.pravatar.cc/100?img=5" class="avatar" alt="avatar">
-      <div class="tweet-content">
-        <div class="tweet-header">
-          <strong>Carlos Ruiz</strong><span class="text-muted">@carlos_r • 5h</span>
-        </div>
-        <div class="tweet-text">
-          Hoy corrí 10km. Me siento como nuevo 🏃‍♂️💪
-        </div>
-        <div class="tweet-actions d-flex justify-content-between">
-          <button><i class="bi bi-chat"></i> 7</button>
-          <button><i class="bi bi-arrow-repeat"></i> 3</button>
-          <button><i class="bi bi-heart"></i> 19</button>
-          <button><i class="bi bi-box-arrow-up"></i></button>
-        </div>
+    <div class="row text-center my-4">
+      <div class="col">
+        <h5>150</h5>
+        <p>Publicaciones</p>
+      </div>
+      <div class="col">
+        <h5>2.3k</h5>
+        <p>Seguidores</p>
+      </div>
+      <div class="col">
+        <h5>180</h5>
+        <p>Siguiendo</p>
       </div>
     </div>
-
   </div>
 
+  <!-- Posts -->
+  <div class="container mt-4">
+    <h4>Publicaciones recientes</h4>
+    <div class="card mb-3">
+      <div class="card-body">
+        <p><strong>Juan Pérez:</strong> Hoy aprendí a usar Bootstrap y está increíble 🔥</p>
+        <small class="text-muted">Hace 2 horas</small>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-body">
+        <p><strong>Juan Pérez:</strong> Si tienes dudas sobre CSS Grid, ¡te puedo ayudar!</p>
+        <small class="text-muted">Hace 1 día</small>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

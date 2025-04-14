@@ -1,0 +1,12 @@
+
+.cover {
+height: 250px;
+background: url('../images/ejemplo_cover.jpg') center/cover no-repeat;
+}
+.profile-img {
+width: 150px;
+height: 150px;
+border-radius: 50%;
+border: 5px solid #fff;
+margin-top: -75px;
+}
