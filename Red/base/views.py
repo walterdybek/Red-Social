@@ -10,7 +10,7 @@ rooms = [   # List of rooms to be displayed in the template
 # Create your views here.
 def home(request):
     context = {'rooms': rooms}  # Context dictionary to pass data to the template
-    return render(request, 'home.html', context)  # Pass the rooms list to the template
+    return render(request, 'base/home.html', context)  # Pass the rooms list to the template
 
 def room(request):
     return render(request, 'room.html')
