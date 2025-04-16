@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Room
+from .models import Room, Topic
 from .forms import RoomForm
 
 
@@ -7,13 +7,15 @@ from .forms import RoomForm
 
 # Create your views here.
 def home(request):
-    rooms = Room.objects.all()  # Fetch all Room objects from the database
-    context = {'rooms': rooms}  # Context dictionary to pass data to the template
+    q=request.GET.get('q') if request.GET.get('q') != None else ''
+    rooms = Room.objects.filter(topic__name__icontains=q)  # Fetch all Room objects from the database
+    topics = Topic.objects.all()  # Fetch all Topic objects from the database
+    context = {'rooms': rooms, 'topics':topics}  # Context dictionary to pass data to the template
     return render(request, 'base/home.html', context)  # Pass the rooms list to the template
 
 def room(request,pk):
     room = Room.objects.get(id=pk)  # Fetch a specific Room object by its primary key (pk)
-    return render(request, 'room.html')
+    return render(request, 'base/room.html')
 
 def prueba(request):
     return render(request, 'test.html')
@@ -41,3 +43,11 @@ def updateRoom(request, pk):
     context = {'form': form}  # Context dictionary to pass data to the template
     return render(request, 'base/room_form.html',context)
 
+
+def deleteRoom(request, pk):
+    room = Room.objects.get(id=pk)
+    if request.method == 'POST':
+        room.delete()
+        return redirect('home')
+    context = {'obj': room}  # Context dictionary to pass data to the template
+    return render(request, 'base/delete.html', {'obj':room})  # Pass the room object to the template
