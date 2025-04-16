@@ -58,7 +58,8 @@ def home(request):
     rooms = Room.objects.filter(Q(topic__name__icontains=q) | Q(name__icontains=q) | Q(description__contains=q)) # Fetch all Room objects from the database
     topics = Topic.objects.all()  # Fetch all Topic objects from the database
     room_count = rooms.count()  # Count the number of rooms
-    context = {'rooms': rooms, 'topics':topics, 'room_count':room_count}  # Context dictionary to pass data to the template
+    room_messages = Message.objects.all()
+    context = {'rooms': rooms, 'topics':topics, 'room_count':room_count, 'room_messages':room_messages}  # Context dictionary to pass data to the template
     return render(request, 'base/home.html', context)  # Pass the rooms list to the template
 
 def room(request,pk):
