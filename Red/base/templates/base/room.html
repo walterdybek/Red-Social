@@ -1,8 +1,40 @@
 {% extends 'main.html' %}
 
 {% block content %}
+<div class="room-container">
+    <div>
+        <h1>{{room.name}}</h1>
+        <h2>{{room.topic.name}}</h2>
 
-    <h1>{{room.name}}</h1>
-    <h2>{{room.topic.name}}</h2>
+        <p>{{room.description}}</p>
 
+        <div class="comment-wrapper">
+            <h3>Conversation</h3>
+            <hr>
+            {% for message in room_message %}
+                <div class="message">
+                    <small>{{ message.user.username }}  {{ message.created_at|timesince }}</small>
+                    <p>{{ message.body }}</p>
+                    <hr>
+                </div>
+            {% endfor %}
+        </div>
+        {% if user.is_authenticated %}
+        <div class="comment-form">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <input type="text" name="body" placeholder="add a comment"/>
+                <input type="submit" value="Post"/>
+            </form>
+
+        </div>
+        {% endif %}
+    </div>
+
+    <div>
+        <h3>Participants</h3>
+        <hr>
+
+    </div>
+</div>
 {% endblock content %}

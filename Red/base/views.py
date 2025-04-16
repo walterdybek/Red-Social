@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout  # Import authentica
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required  # Import login_required decorator
 from django.contrib.auth.forms import UserCreationForm  # Import UserCreationForm for user registration
-from .models import Room, Topic
+from .models import Room, Topic, Message
 from .forms import RoomForm
 
 
@@ -63,7 +63,13 @@ def home(request):
 
 def room(request,pk):
     room = Room.objects.get(id=pk)  # Fetch a specific Room object by its primary key (pk)
-    return render(request, 'base/room.html')
+    room_message = room.message_set.all().order_by('-created')  # Fetch all messages related to the room and order them by creation date
+
+    if request.method == 'POST':
+        message= Message.objects.create(user=request.user, room=room, body=request.POST.get('body'))  # Create a new message object 
+        return redirect('room', pk=room.id)  # Redirect to the same room page after posting a message
+    context = {'room': room, 'room_message': room_message}  # Context dictionary to pass data to the template
+    return render(request, 'base/room.html',context)
 
 def prueba(request):
     return render(request, 'test.html')
