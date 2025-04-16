@@ -10,20 +10,7 @@
 
 <div class="home-container">
     <div>
-        <h3>Browse</h3>
-        <hr>
-
-        <div>
-            <a href="{% url 'home' %}">ALL</a>
-            
-        </div>
-
-        {% for topic in topics%}
-            <div>
-                <a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a>
-                
-            </div>
-        {% endfor %}
+        {% include 'base/topics_component.html' %}
     </div>
     <div>
         <h5>{{room_count}} rooms available</h5>
@@ -46,17 +33,7 @@
     </div>
 
     <div >
-        <h3>recent activity</h3>
-        <hr>
-        {% for message in room_messages %}
-            <div>
-                <small>@{{ message.user.username }}  {{ message.created|timesince}}</small>
-                <small>replied to "{{message.room}}"</small>
-                
-                <p>{{ message.body }}</p>
-                <hr>
-            </div>
-        {% endfor %}
+        {% include 'base/activity_component.html' %}
     </div>
     
 </div>>
