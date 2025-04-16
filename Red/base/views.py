@@ -64,11 +64,12 @@ def home(request):
 def room(request,pk):
     room = Room.objects.get(id=pk)  # Fetch a specific Room object by its primary key (pk)
     room_message = room.message_set.all().order_by('-created')  # Fetch all messages related to the room and order them by creation date
-
+    participants = room.participants.all()  # Fetch all participants in the room
     if request.method == 'POST':
         message= Message.objects.create(user=request.user, room=room, body=request.POST.get('body'))  # Create a new message object 
+        room.participants.add(request.user)  # Add the user to the room's participants
         return redirect('room', pk=room.id)  # Redirect to the same room page after posting a message
-    context = {'room': room, 'room_message': room_message}  # Context dictionary to pass data to the template
+    context = {'room': room, 'room_message': room_message,'participants':participants }  # Context dictionary to pass data to the template
     return render(request, 'base/room.html',context)
 
 def prueba(request):
@@ -113,3 +114,14 @@ def deleteRoom(request, pk):
     context = {'obj': room}  # Context dictionary to pass data to the template
     return render(request, 'base/delete.html', {'obj':room})  # Pass the room object to the template
 
+@login_required(login_url='login') 
+def deleteMessage(request, pk):
+    message = Message.objects.get(id=pk)
+
+    if request.user != message.user:  # Check if the user is not the host of the room
+        return HttpResponse('You are not allowed here!')
+    if request.method == 'POST':
+        message.delete()
+        return redirect('home')
+    context = {'obj': room}  # Context dictionary to pass data to the template
+    return render(request, 'base/delete.html', {'obj':message})  # Pass the room object to the template
