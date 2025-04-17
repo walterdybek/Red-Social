@@ -1,3 +1,16 @@
 <nav style="background: lightgray;">
     <p>Esto es la barra de navegación</p>
 </nav>
+
+
+<form method="GET" action="{% url 'home' %}">
+  <input type="text" name ="q" placeholder="Search..."/>
+</form>
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}!</p>
+    <a href="{% url 'logout' %}">Logout</a>
+{% else %}
+<a href="{% url 'login' %}">Login</a>
+{% endif %}
+
+<hr>
