@@ -134,6 +134,6 @@ def deleteMessage(request, pk):
         return HttpResponse('You are not allowed here!')
     if request.method == 'POST':
         message.delete()
-        return redirect('home')
-    context = {'obj': room}  # Context dictionary to pass data to the template
+        return redirect('room', pk=message.room.id)  # Redirect to the room page after deleting the message
+    context = {'obj': message}  # Context dictionary to pass data to the template
     return render(request, 'base/delete.html', {'obj':message})  # Pass the room object to the template
