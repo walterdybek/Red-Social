@@ -76,13 +76,24 @@ def room(request,pk):
 def prueba(request):
     return render(request, 'test.html')
 
+
+def userProfile(request,pk):
+    user = User.objects.get(id=pk)  # Fetch a specific User object by its primary key (pk)
+    rooms = user.room_set.all()  # Fetch all rooms created by the user
+    room_messages = user.message_set.all()  # Fetch all messages sent by the user
+    topics = Topic.objects.all()  # Fetch all Topic objects from the database
+    context = {'user': user, 'rooms': rooms,'room_messages': room_messages, 'topics': topics }  # Context dictionary to pass data to the template
+    return render(request, 'base/profile.html',context)
+
 @login_required(login_url='login')  # Require login to access this view
 def createRoom(request):
     form = RoomForm
     if request.method == 'POST':
         form = RoomForm(request.POST)
         if form.is_valid():
-            form.save()
+            room = form.save(commit=False)
+            room.host = request.user
+            room.save()  # Save the room to the database    
             return redirect('home')
     context = {'form': form}  # Context dictionary to pass data to the template
     return render(request, 'base/room_form.html',context)
