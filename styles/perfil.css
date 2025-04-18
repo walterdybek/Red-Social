@@ -1,12 +1,517 @@
+:root {
+    --primary: #245DFF;
+    --secondary: #00CFFF;
+    --glass: rgba(255, 255, 255, 0.05);
+}
 
-.cover {
-height: 250px;
-background: url('../images/ejemplo_cover.jpg') center/cover no-repeat;
+body {
+    font-family: 'Red Hat Display', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #12131a 100%);
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
 }
-.profile-img {
-width: 150px;
-height: 150px;
-border-radius: 50%;
-border: 5px solid #fff;
-margin-top: -75px;
+
+.sidebar {
+    width: 70px;
+    background: #1a1a1a;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    transition: width 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    overflow: hidden;
 }
+
+.sidebar:hover {
+    width: 200px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding-top: 20px;
+    padding-left: 15px;
+}
+
+.sidebar-nav a,
+.sidebar-footer a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #888;
+    font-size: 1.2em;
+    text-decoration: none;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.sidebar-nav a:hover,
+.sidebar-footer a:hover,
+.sidebar-nav a.active {
+    color: var(--secondary);
+    transform: scale(1.05);
+}
+
+.sidebar-nav a span,
+.sidebar-footer a span {
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+    font-size: 0.9em;
+}
+
+.sidebar:hover a span {
+    opacity: 1;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    margin-bottom: 20px;
+    padding-left: 15px;
+}
+
+.main-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    padding: 20px;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.sidebar:hover ~ .main-content {
+    margin-left: 200px;
+    width: calc(100% - 200px);
+}
+
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.avatar-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+}
+
+.avatar-border {
+    position: absolute;
+    width: 110%;
+    height: 110%;
+    top: -5%;
+    left: -5%;
+    background: conic-gradient(
+        from 180deg at 50% 50%,
+        var(--primary),
+        var(--secondary),
+        var(--primary)
+    );
+    border-radius: 50%;
+    z-index: 0;
+    animation: rotateBorder 8s linear infinite;
+    filter: blur(2px);
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+    border: 3px solid white;
+}
+
+.connection-pulse {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    background: var(--secondary);
+    border-radius: 50%;
+    z-index: 2;
+    animation: pulse 2s infinite;
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.profile-stats .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+}
+
+.profile-stats .stat div {
+    font-size: 1.2em;
+    color: white;
+}
+
+.profile-stats .stat small {
+    margin-top: 5px;
+    font-size: 0.8em;
+    color: #ccc;
+    letter-spacing: 0.5px;
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    gap: 10px;
+}
+
+.stat {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    flex: 1;
+    font-weight: 700;
+    font-size: 1.2em;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.uflow-daily {
+    background: #0d0d0d;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px 0;
+    border: 1px dashed var(--primary);
+    text-align: center;
+}
+
+.uflow-progress {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 0.5s ease;
+}
+
+.uflow-button {
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1em;
+    margin: 10px 0;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.uflow-button:disabled {
+    background: #444;
+    cursor: not-allowed;
+}
+
+.uflow-button:not(:disabled):hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(36, 93, 255, 0.4);
+}
+
+.uflow-counter span {
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+.create-button {
+    display: block;
+    margin: 20px auto;
+    width: 200px;
+    background-color: #2c3e50;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.create-button:hover {
+    background-color: #3b5770;
+}
+
+.content-tabs {
+    display: flex;
+    justify-content: space-around;
+    margin: 25px 0;
+    position: relative;
+}
+
+.tab {
+    background: none;
+    border: none;
+    color: white;
+    font-family: inherit;
+    font-size: 1em;
+    padding: 10px 15px;
+    cursor: pointer;
+    position: relative;
+    opacity: 0.6;
+    transition: all 0.3s;
+}
+
+.tab.active {
+    opacity: 1;
+    font-weight: 700;
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 15%;
+    width: 70%;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    margin-bottom: 30px;
+}
+
+.grid-item {
+    aspect-ratio: 1;
+    background: var(--glass);
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.grid-item:hover {
+    transform: scale(1.03);
+    z-index: 1;
+}
+
+.grid-item img, .grid-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.live-connections {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.connections-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.connection {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #222;
+    position: relative;
+}
+
+.connection img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.connection::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    background: var(--secondary);
+    border-radius: 50%;
+    border: 2px solid #0a0a0a;
+}
+
+.uflow-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.uflow-modal.active {
+    display: flex;
+}
+
+.uflow-modal .modal-content {
+    background: linear-gradient(135deg, #12131a 0%, #0a0a0a 100%);
+    border-radius: 15px;
+    width: 500px;
+    max-width: 90%;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.uflow-modal textarea {
+    width: 100%;
+    height: 150px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: 'Red Hat Display', sans-serif;
+    font-size: 1.2em;
+    resize: none;
+    margin: 15px 0;
+    padding: 10px;
+}
+
+.uflow-modal textarea:focus {
+    outline: none;
+}
+
+.uflow-modal .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.uflow-modal .publish-btn {
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.uflow-modal .publish-btn:disabled {
+    background: #444;
+    cursor: not-allowed;
+}
+
+.uflow-modal .publish-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+}
+
+#publishUflow:disabled {
+    background: #444 !important; /* Gris cuando está deshabilitado */
+    cursor: not-allowed;
+  }
+  
+  #publishUflow:not(:disabled) {
+    background: linear-gradient(45deg, var(--primary), var(--secondary)) !important; /* Azul cuando está activo */
+    cursor: pointer;
+  }
+
+#closeModal {
+  background: transparent !important;
+  border: none !important;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 5px;
+  margin: 0;
+}
+
+#closeModal:hover {
+  color: var(--secondary);
+}
+
+#charCounter {
+    color: #888;
+    font-size: 0.9em;
+}
+
+@keyframes rotateBorder {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+    position: relative;
+  }
+  
+.uflow-title {
+    position: absolute;
+    top: -43px;
+    right: 15px;
+    font-family: 'Arial Rounded MT Bold', 'Segoe UI', sans-serif; /* Fuente con curvas */
+    font-weight: 900;
+    font-size: 1.8em;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    /* Efecto 3D estilo grafiti */
+    text-shadow: 
+      0 0 5px rgba(36, 93, 255, 0.8), /* Resplandor azul exterior */
+      2px 2px 0px var(--secondary),
+      4px 4px 0px rgba(0, 0, 0, 0.3);
+    /* Curvas en letras (si la fuente no es suficiente) */
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+    /* Filtro SVG para suavizar bordes */
+    filter: 
+      drop-shadow(0 0 8px rgba(36, 93, 255, 0.6)) /* Resplandor azul difuso */
+      url('#grafiti-filter'); /* Opcional: filtro SVG para curvas */
+    z-index: 1001;
+    padding: 0 5px;
+  }
+
+  
