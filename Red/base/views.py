@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required  # Import login_required decorator
 from django.contrib.auth.forms import UserCreationForm  # Import UserCreationForm for user registration
 from .models import Room, Topic, Message
-from .forms import RoomForm
+from .forms import RoomForm, UserForm  # Import RoomForm and UserForm for creating and updating rooms and users
 
 
 
@@ -22,10 +22,10 @@ def loginPage(request):
         username = request.POST.get('username').lower()  # Get the username from the POST request and convert it to lowercase
         password = request.POST.get('password')
         try:
-            user = User.objects.get(username=username)
+            user = User.objects.get(username=username,)  # Fetch the user from the database using username and email
         except:
             messages.error(request, 'User does not exist')
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=username,password=password)
         if user is not None:
             login(request, user)
             return redirect('home')
@@ -56,7 +56,7 @@ def registerPage(request):
 def home(request):
     q=request.GET.get('q') if request.GET.get('q') != None else ''
     rooms = Room.objects.filter(Q(topic__name__icontains=q) | Q(name__icontains=q) | Q(description__contains=q)) # Fetch all Room objects from the database
-    topics = Topic.objects.all()  # Fetch all Topic objects from the database
+    topics = Topic.objects.all()[0:5]  # Fetch all Topic objects from the database
     room_count = rooms.count()  # Count the number of rooms
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q) | Q(room__name__icontains=q) | Q(room__description__contains=q))  # Fetch all messages related to the rooms
     context = {'rooms': rooms, 'topics':topics, 'room_count':room_count, 'room_messages':room_messages}  # Context dictionary to pass data to the template
@@ -137,3 +137,21 @@ def deleteMessage(request, pk):
         return redirect('room', pk=message.room.id)  # Redirect to the room page after deleting the message
     context = {'obj': message}  # Context dictionary to pass data to the template
     return render(request, 'base/delete.html', {'obj':message})  # Pass the room object to the template
+
+
+@login_required(login_url='login') 
+def updateUser(request):
+    user= request.user
+    form = UserForm(instance=user)
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile', pk=user.id)
+    return render(request, 'base/update-user.html', {'form': form})  # Pass the form to
+
+def topicsPage(request):
+    q=request.GET.get('q') if request.GET.get('q') != None else ''
+    topics = Topic.objects.filter(name__icontains=q)  # Fetch all Topic objects from the database
+    context = {'topics': topics}  # Context dictionary to pass data to the template
+    return render(request, 'base/topics.html', context)  # Pass the rooms list to the template
