@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout  # Import authentica
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required  # Import login_required decorator
 from django.contrib.auth.forms import UserCreationForm  # Import UserCreationForm for user registration
-from .models import Room, Topic, Message, Profile  # Import Room, Topic, Message, and Profile models
+from .models import Room, Topic, Message # Import Room, Topic, Message, and Profile models
 from .forms import RoomForm, UserForm  # Import RoomForm and UserForm for creating and updating rooms and users
 from .forms import CustomUserCreationForm
 
@@ -14,44 +14,47 @@ from .forms import CustomUserCreationForm
 
 # Create your views here.
 
-# def loginPage(request):
-#     page = 'login'  # Set the page variable to 'login'
-#     if request.user.is_authenticated:  # Check if the user is already authenticated
-#         return redirect('home')
-#     if request.method == 'POST':
-#         username = request.POST.get('username').lower()  # Get the username from the POST request and convert it to lowercase
-#         password = request.POST.get('password')
-#         try:
-#             user = User.objects.get(username=username,)  # Fetch the user from the database using username and email
-#         except:
-#             messages.error(request, 'User does not exist')
-#         user = authenticate(request, username=username,password=password)
-#         if user is not None:
-#             login(request, user)
-#             return redirect('home')
-#         else:
-#             messages.error(request, 'Username or password does not exist')
-#     context = {'page':page}  # Context dictionary to pass data to the template
-#     return render(request, 'base/login_registration.html', context)  # Pass the page variable to the template
+def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        username = request.POST.get('username').lower()
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Usuario o contraseña incorrectos')
+    
+    return render(request, 'base/login.html')
 
+def logoutUser(request):
+    logout(request)  # Log out the user
+    return redirect('home')  # Redirect to the home page
 
-# def logoutUser(request):
-#     logout(request)  # Log out the user
-#     return redirect('home')  # Redirect to the home page
-
-# def registerPage(request):
-#     form = UserCreationForm()  # Create an instance of UserCreationForm
-#     if request.method == 'POST':
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save(commit=False)
-#             user.username = user.username.lower()  # Convert username to lowercase
-#             user.save()  # Save the user to the database
-#             login(request, user)
-#             return redirect('home')  # Redirect to the login page
-#         else:
-#             messages.error(request, 'An error occurred during registration')
-#     return render(request, 'base/login_registration.html',{'form':form})  # Pass the page variable to the template
+def registerPage(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, '¡Registro exitoso!')
+            return redirect('home')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = CustomUserCreationForm()
+    
+    return render(request, 'base/login.html', {'form': form})
 
 def home(request):
     q=request.GET.get('q') if request.GET.get('q') != None else ''
@@ -163,48 +166,3 @@ def activityPage(request):
 
 
 #login resgirtro 
-def loginPage(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    
-    if request.method == 'POST':
-        username = request.POST.get('username').lower()
-        password = request.POST.get('password')
-        
-        try:
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                next_url = request.GET.get('next', 'home')
-                return redirect(next_url)
-            else:
-                messages.error(request, 'Usuario o contraseña incorrectos')
-        except Exception as e:
-            messages.error(request, f'Error al iniciar sesión: {str(e)}')
-    
-    return render(request, 'base/login.html')
-
-def registerPage(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            
-            # Autenticar al usuario después del registro
-            login(request, user)
-            messages.success(request, '¡Registro exitoso! Bienvenido a UFlow')
-            return redirect('home')
-        else:
-            messages.error(request, 'Por favor corrige los errores en el formulario')
-    else:
-        form = CustomUserCreationForm()
-    
-    return render(request, 'base/login.html', {'form': form})
-
-def logoutUser(request):
-    logout(request)
-    messages.success(request, 'Has cerrado sesión correctamente')
-    return redirect('login')
