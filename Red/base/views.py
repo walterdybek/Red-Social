@@ -6,14 +6,21 @@ from django.contrib.auth import authenticate, login, logout  # Import authentica
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required  # Import login_required decorator
 from django.contrib.auth.forms import UserCreationForm  # Import UserCreationForm for user registration
-from .models import Room, Topic, Message # Import Room, Topic, Message, and Profile models
+from .models import Room, Topic, Message, Post # Import Room, Topic, Message, and Profile models
 from .forms import RoomForm, UserForm  # Import RoomForm and UserForm for creating and updating rooms and users
 from .forms import CustomUserCreationForm
-
+from django.views import View
 
 
 # Create your views here.
 
+class PostListView(View):
+    def get(self,request,*args, **kwargs):
+        posts = Post.objects.all().order_by('-created')
+        context ={
+            'post_list':posts,
+        }
+        return render (request,'base/post_list.html', context)
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect('home')

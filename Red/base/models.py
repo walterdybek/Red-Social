@@ -39,6 +39,11 @@ class Message(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
+class Post(models.Model):
+    user = user = models.ForeignKey(User, on_delete=models.CASCADE)
+    body = models.TextField()
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
     class Meta:
         ordering = ['-updated', '-created']
 
