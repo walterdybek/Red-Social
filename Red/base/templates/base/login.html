@@ -39,7 +39,7 @@
                     <!-- Formulario de Login -->
                     <form method="POST" action="{% url 'login' %}">
                         {% csrf_token %}
-                        <div class="mb-3 input-div position-relative">
+                        <div class="mb-5 input-div position-relative">
                             <input type="text" name="username" class="form-control input-class" required>
                             <label class="text-secondary small">Usuario</label>
                         </div>
