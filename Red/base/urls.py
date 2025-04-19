@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [ 
@@ -15,5 +16,6 @@ urlpatterns = [
     path('delete-message/<str:pk>', views.deleteMessage, name='delete-message'),
     path('update-user/', views.updateUser, name='update-user'),
     path('topics/', views.topicsPage, name='topics'),
+    path('activity/', views.activityPage, name='activity'),
 
 ]
