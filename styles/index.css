@@ -36,6 +36,7 @@ button{
     left: 9px;
     transition: 0.5s;
 }
+
 .input-class:focus ~ label{
     top: -28px;
     left: 0;
