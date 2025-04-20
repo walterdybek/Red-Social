@@ -31,15 +31,20 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',  # Channels for WebSocket support
+   
     
     'base.apps.BaseConfig',  # Custom app for the project
 ]
+
+AUTH_USER_MODEL = 'base.User'  # Custom user model
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -72,6 +77,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Red.wsgi.application'
+ASGI_APPLICATION = 'Red.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+        # Para producción usa Redis:
+        # "BACKEND": "channels_redis.core.RedisChannelLayer",
+        # "CONFIG": {
+        #     "hosts": [("127.0.0.1", 6379)],
+        # },
+    },
+}
 
 
 # Database
@@ -120,10 +136,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = 'media/'  # URL for media files (user-uploaded files)
 STATICFILES_DIRS = [
     BASE_DIR / 'static',  # Directory for static files
 ]
-
+MEDIA_ROOT = BASE_DIR / 'static/media'  # Directory for media files (user-uploaded files)
 #STATIC_ROOT =   # Directory for collected static files
 
 # Default primary key field type

@@ -1,6 +1,5 @@
 from django.forms import ModelForm
-from .models import Room
-from django.contrib.auth.models import User
+from .models import Room, User
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
@@ -15,14 +14,10 @@ class RoomForm(ModelForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'email']  # Include the fields you want to allow the user to update
+        fields = ['avatar','first_name', 'last_name','username', 'email']  # Include the fields you want to allow the user to update
 
 #usuario form
 class CustomUserCreationForm(UserCreationForm):
-    first_name = forms.CharField(required=True, max_length=30)
-    last_name = forms.CharField(required=True, max_length=150)
-    email = forms.EmailField(required=True)
-    birthdate = forms.DateField(required=True, widget=forms.DateInput(attrs={'type': 'date'}))
     
     class Meta:
         model = User

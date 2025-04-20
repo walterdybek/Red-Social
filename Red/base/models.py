@@ -1,11 +1,20 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db.models.deletion import CASCADE
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 # Create your models here.
+
+class User(AbstractUser):
+    username = models.CharField(unique=True,max_length=200, null=True)
+    first_name = models.CharField(max_length=200, null=True)
+    last_name = models.CharField(max_length=200, null=True)
+    email = models.EmailField(unique=True, null=True)
+    bio = models.TextField(null=True)
+    avatar = models.ImageField(null=True, default="avatar.svg")
+    birthdate = models.DateField(null=True, blank=True)
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []
 
 class Topic(models.Model):
     name = models.CharField(max_length=200)

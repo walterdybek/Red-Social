@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse  # Import HttpResponse for returning HTTP responses
 from django.db.models import Q  # Import Q for complex queries
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout  # Import authentication functions
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required  # Import login_required decorator
 from django.contrib.auth.forms import UserCreationForm  # Import UserCreationForm for user registration
-from .models import Room, Topic, Message, Post # Import Room, Topic, Message, and Profile models
+from .models import Room, Topic, Message, Post , User # Import Room, Topic, Message, and Profile models
 from .forms import RoomForm, UserForm  # Import RoomForm and UserForm for creating and updating rooms and users
 from .forms import CustomUserCreationForm
 from django.views import View
+from django.http import JsonResponse
+import json
+from django.views.decorators.http import require_http_methods
 
 
 # Create your views here.
@@ -21,6 +23,7 @@ class PostListView(View):
             'post_list':posts,
         }
         return render (request,'base/post_list.html', context)
+    
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -72,16 +75,54 @@ def home(request):
     context = {'rooms': rooms, 'topics':topics, 'room_count':room_count, 'room_messages':room_messages}  # Context dictionary to pass data to the template
     return render(request, 'base/home.html', context)  # Pass the rooms list to the template
 
-def room(request,pk):
-    room = Room.objects.get(id=pk)  # Fetch a specific Room object by its primary key (pk)
-    room_message = room.message_set.all().order_by('-created')  # Fetch all messages related to the room and order them by creation date
-    participants = room.participants.all()  # Fetch all participants in the room
+# def room(request,pk):
+#     room = Room.objects.get(id=pk)  # Fetch a specific Room object by its primary key (pk)
+#     room_message = room.message_set.all().order_by('-created')  # Fetch all messages related to the room and order them by creation date
+#     participants = room.participants.all()  # Fetch all participants in the room
+#     if request.method == 'POST':
+#         message= Message.objects.create(user=request.user, room=room, body=request.POST.get('body'))  # Create a new message object 
+#         room.participants.add(request.user)  # Add the user to the room's participants
+#         return redirect('room', pk=room.id)  # Redirect to the same room page after posting a message
+#     context = {'room': room, 'room_message': room_message,'participants':participants }  # Context dictionary to pass data to the template
+#     return render(request, 'base/room.html',context)
+
+from django.http import JsonResponse  # Añade esto al inicio del archivo
+
+def room(request, pk):
+    room = Room.objects.get(id=pk)
+    room_messages = room.message_set.all().order_by('-created')
+    participants = room.participants.all()
+    
     if request.method == 'POST':
-        message= Message.objects.create(user=request.user, room=room, body=request.POST.get('body'))  # Create a new message object 
-        room.participants.add(request.user)  # Add the user to the room's participants
-        return redirect('room', pk=room.id)  # Redirect to the same room page after posting a message
-    context = {'room': room, 'room_message': room_message,'participants':participants }  # Context dictionary to pass data to the template
-    return render(request, 'base/room.html',context)
+        message_body = request.POST.get('body')
+        if message_body:
+            message = Message.objects.create(
+                user=request.user,
+                room=room,
+                body=message_body
+            )
+            room.participants.add(request.user)
+            
+            # Respuesta para peticiones AJAX/WebSocket
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': True,
+                    'message': message_body,
+                    'user': {
+                        'id': request.user.id,
+                        'username': request.user.username,
+                        'avatar': request.user.avatar.url if request.user.avatar else ''
+                    }
+                })
+            
+            return redirect('room', pk=room.id)
+    
+    context = {
+        'room': room,
+        'room_message': room_messages,
+        'participants': participants
+    }
+    return render(request, 'base/room.html', context)
 
 def prueba(request):
     return render(request, 'test.html')
@@ -154,7 +195,7 @@ def updateUser(request):
     user= request.user
     form = UserForm(instance=user)
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=user)
+        form = UserForm(request.POST,request.FILES ,instance=user)
         if form.is_valid():
             form.save()
             return redirect('user-profile', pk=user.id)
@@ -172,4 +213,15 @@ def activityPage(request):
     return render(request, 'base/activity.html', context)  # Pass the rooms list to the template
 
 
-#login resgirtro 
+#elimianr mensaje en chat tiempo real prueba
+@require_http_methods(["DELETE"])
+def delete_message_ws(request, pk):
+    try:
+        message = Message.objects.get(id=pk)
+        if request.user != message.user:
+            return JsonResponse({'error': 'No tienes permiso para eliminar este mensaje'}, status=403)
+        
+        message.delete()
+        return JsonResponse({'success': True})
+    except Message.DoesNotExist:
+        return JsonResponse({'error': 'Mensaje no encontrado'}, status=404)

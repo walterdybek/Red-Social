@@ -1,5 +1,5 @@
 {% extends 'main.html' %}
-
+{% load static %}
 {% block content %}
     <main class="profile-page layout layout--2">
       <div class="container">
@@ -66,7 +66,7 @@
                 <p>Hosted By</p>
                 <a href="{% url 'user-profile' room.host.id %}" class="room__author">
                   <div class="avatar avatar--small">
-                    <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+                    <img src="{{room.host.avatar.url}}" />
                   </div>
                   <span>@{{room.host.username}}</span>
                 </a>
@@ -79,12 +79,12 @@
             <div class="room__conversation">
               <div class="threads scroll">
                 {% for message in room_message %}
-                <div class="thread">
+                <div class="thread" data-message-id="{{ message.id }}">
                   <div class="thread__top">
                     <div class="thread__author">
                       <a href="{% url 'user-profile' message.user.id %}" class="thread__authorInfo">
                         <div class="avatar avatar--small">
-                          <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+                          <img src="{{message.user.avatar.url}}" />
                         </div>
                         <span>@{{message.user.username}}</span>
                       </a>
@@ -127,7 +127,7 @@
             {% for user in participants %}
             <a href="{% url 'user-profile' user.id %}" class="participant">
               <div class="avatar avatar--medium">
-                <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+                <img src="{{user.avatar.url}}" />
               </div>
               <p>
                 {{user.username}}
@@ -140,4 +140,142 @@
         <!-- Participants End -->
       </div>
     </main>
+
+    <!-- Añade esto al final del bloque content -->
+    <script>
+      const roomId = "{{ room.id }}";
+      const currentUser = {
+          id: "{{ request.user.id }}",
+          username: "{{ request.user.username }}",
+          avatar: "{% if request.user.avatar %}{{ request.user.avatar.url }}{% else %}{% static 'images/avatar.svg' %}{% endif %}"
+      };
+    
+// Construye la URL correctamente
+const wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+const wsPath = '/ws/chat/' + roomId + '/';
+const chatSocket = new WebSocket(wsProtocol + window.location.host + wsPath);
+
+// Manejar conexión
+chatSocket.onopen = function(e) {
+    console.log('Conexión WebSocket establecida con:', wsProtocol + window.location.host + wsPath);
+};
+
+// Manejar errores mejorado
+chatSocket.onerror = function(e) {
+    console.error('Error en WebSocket:', e);
+    console.log('URL intentada:', wsProtocol + window.location.host + wsPath);
+    alert('Error al conectar con el servidor. Recarga la página.');
+};
+
+// Manejar cierre
+chatSocket.onclose = function(e) {
+    console.log('Conexión WebSocket cerrada:', e.reason);
+    if (!e.wasClean) {
+        alert('Conexión perdida. Recarga la página para reconectar.');
+    }
+};
+    
+      // Manejar mensajes entrantes
+      chatSocket.onmessage = function(e) {
+          const data = JSON.parse(e.data);
+          
+          // Verificar si el mensaje ya existe (para evitar duplicados)
+          const existingMessage = document.querySelector(`.thread[data-message-id="${data.id}"]`);
+          if (existingMessage) return;
+          
+          // Crear HTML del mensaje
+          const messageHtml = `
+              <div class="thread" data-message-id="${data.id}">
+                  <div class="thread__top">
+                      <div class="thread__author">
+                          <a href="/user-profile/${data.user_id}/" class="thread__authorInfo">
+                              <div class="avatar avatar--small">
+                                  <img src="${data.avatar}" />
+                              </div>
+                              <span>@${data.username}</span>
+                          </a>
+                          <span class="thread__date">just now</span>
+                      </div>
+                      ${data.user_id == currentUser.id ? `
+                      <a href="#" class="delete-message" data-message-id="${data.id}">
+                          <div class="thread__delete">
+                              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                  <title>remove</title>
+                                  <path
+                                      d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z"
+                                  ></path>
+                              </svg>
+                          </div>
+                      </a>
+                      ` : ''}
+                  </div>
+                  <div class="thread__details">
+                      ${data.message}
+                  </div>
+              </div>
+          `;
+          
+          // Añadir mensaje al DOM
+          document.querySelector('.threads').insertAdjacentHTML('beforeend', messageHtml);
+          
+          // Scroll al final
+          const threadsContainer = document.querySelector('.threads');
+          threadsContainer.scrollTop = threadsContainer.scrollHeight;
+      };
+    
+      // Manejar envío de mensajes
+      document.querySelector('.room__message form').onsubmit = function(e) {
+    e.preventDefault();
+    const messageInput = document.querySelector('input[name="body"]');
+    const message = messageInput.value.trim();
+    
+    // Verifica que el socket esté abierto
+    if (chatSocket.readyState === WebSocket.OPEN && message && currentUser.id) {
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'user_id': currentUser.id
+        }));
+        messageInput.value = '';
+    } else {
+        console.error('WebSocket no está listo. Estado:', chatSocket.readyState);
+        alert('No se pudo enviar el mensaje. Intenta recargar la página.');
+    }
+    return false;
+};
+    
+      // Manejar tecla Enter
+      document.querySelector('input[name="body"]').addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+              e.preventDefault();
+              document.querySelector('.room__message form').dispatchEvent(new Event('submit'));
+          }
+      });
+    
+      // Manejar eliminación de mensajes
+      document.addEventListener('click', function(e) {
+          if (e.target.closest('.delete-message') || e.target.closest('.thread__delete')) {
+              e.preventDefault();
+              const messageElement = e.target.closest('.thread');
+              const messageId = messageElement.dataset.messageId;
+              
+              if (messageId) {
+                  fetch(`/delete-message/${messageId}/`, {
+                      method: 'DELETE',
+                      headers: {
+                          'X-CSRFToken': '{{ csrf_token }}',
+                          'Content-Type': 'application/json'
+                      }
+                  })
+                  .then(response => {
+                      if (response.ok) {
+                          messageElement.remove();
+                      } else {
+                          console.error('Error al eliminar mensaje');
+                      }
+                  })
+                  .catch(error => console.error('Error:', error));
+              }
+          }
+      });
+    </script>
 {% endblock %}

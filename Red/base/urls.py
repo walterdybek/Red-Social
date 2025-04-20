@@ -19,5 +19,6 @@ urlpatterns = [
     path('topics/', views.topicsPage, name='topics'),
     path('activity/', views.activityPage, name='activity'),
     path('',PostListView.as_view(), name='post-list'),
+    path('api/message/<int:pk>/', views.delete_message_ws, name='delete-message-ws'),
 
 ]
