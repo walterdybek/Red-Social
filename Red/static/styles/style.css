@@ -1,17 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 
 :root {
-  --color-main: #71c6dd;
-  --color-main-light: #e1f6fb;
-  --color-dark: #3f4156;
-  --color-dark-medium: #51546e;
-  --color-dark-light: #696d97;
-  --color-light: #e5e5e5;
-  --color-gray: #8b8b8b;
-  --color-light-gray: #b2bdbd;
-  --color-bg: #2d2d39;
-  --color-success: #5dd693;
-  --color-error: #fc4b0b;
+  --color-main: #4a90e2;           /* Azul brillante principal */
+  --color-main-light: #d9ecff;     /* Azul claro suave */
+  --color-dark: #2c3e50;           /* Azul oscuro grisáceo */
+  --color-dark-medium: #3e5771;    /* Azul medio oscuro */
+  --color-dark-light: #5a7a9c;     /* Azul medio claro */
+  --color-light: #eaf3fb;          /* Azul muy claro casi blanco */
+  --color-gray: #7f9cb5;           /* Gris azulado */
+  --color-light-gray: #a2b8cf;     /* Gris claro azulado */
+  --color-bg: #1f2b3d;             /* Azul oscuro profundo (fondo) */
+  --color-success: #4caf50;        /* Éxito (verde estándar para contraste) */
+  --color-error: #e53935;          /* Error (rojo estándar para contraste) */
 }
 /*========== base styles ==========*/
 
