@@ -58,17 +58,17 @@ button{
         transform: rotate(360deg);
     }
 }
-.logo>h1{
-    font-size: 150px;
-    color: white;
-    margin-bottom: 70px;
-}
+
 
 .logo>p{
     color: white;
     font-size: larger;
 }
 
+#uflow{
+    background-color: white;
+    width: 600px;
+}
 .signup{
     margin-top: 0px;
 }
@@ -100,13 +100,7 @@ button{
         margin-bottom: 2rem;
     }
 
-    .logo > h1 {
-        font-size: 70px;
-    }
 
-    .logo > p {
-        font-size: 1rem;
-    }
 
     .options {
         display: flex;
