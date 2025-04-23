@@ -1,0 +1,231 @@
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container feed-container">
+    <!-- Formulario de publicación ampliado -->
+    <div class="row justify-content-center mt-4 mb-5">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card post-form-card shadow">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Crear nueva publicación</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            {{ form.as_p }}
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg py-2">
+                                <i class="bi bi-send-fill me-2"></i>Publicar ahora
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de publicaciones ampliadas -->
+    {% for post in post_list %}
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card post-card shadow-lg">
+                <!-- Cabecera más destacada -->
+                <div class="card-header bg-light py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar me-3">
+                                <i class="bi bi-person-circle fs-2"></i>
+                            </div>
+                            <div>
+                                <h5 class="post-username mb-1">{{ post.user }}</h5>
+                                <small class="text-muted post-date">
+                                    <i class="bi bi-clock me-1"></i>{{ post.created|date:"d M Y H:i" }}
+                                </small>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Cuerpo ampliado -->
+                <div class="card-body p-4">
+                    {% if post.image %}
+                    <div class="post-image-container mb-4">
+                        <img src="{{ post.image.url }}" alt="Post image" class="post-image img-fluid rounded">
+                    </div>
+                    {% endif %}
+                    <div class="post-content fs-5">
+                        {{ post.body|linebreaksbr }}
+                    </div>
+                </div>
+                
+                <!-- Acciones más visibles -->
+                <div class="card-footer bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="reaction-buttons">
+                            <form method="post" action="{% url 'like' post.pk %}" class="d-inline me-3">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <button class="btn btn-lg btn-outline-primary like-btn px-4" type="submit">
+                                    <i class="bi bi-heart-fill me-2"></i>
+                                    <span class="reaction-count fw-bold">{{ post.likes.all.count }}</span>
+                                </button>
+                            </form>
+                            <form method="post" action="{% url 'dislike' post.pk %}" class="d-inline me-3">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <button class="btn btn-lg btn-outline-primary like-btn px-4" type="submit">
+                                    <i class="bi bi-heartbreak-fill"></i>
+                                    <span class="reaction-count fw-bold">{{ post.dislikes.all.count }}</span>
+                                </button>
+                            </form>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-dark">
+                                <i class="bi bi-share"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card empty-feed py-5 text-center">
+                <i class="bi bi-newspaper fs-1 text-muted mb-3"></i>
+                <h3 class="mb-2">No hay publicaciones todavía</h3>
+                <p class="text-muted fs-5">Sé el primero en compartir algo con la comunidad!</p>
+                <button class="btn btn-primary mt-3 px-4 py-2">
+                    <i class="bi bi-plus-circle me-2"></i>Crear publicación
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
+<style>
+    /* Estilos generales ampliados */
+    .feed-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding-bottom: 50px;
+    }
+    
+    /* Tarjeta de publicación más grande */
+    .post-card {
+        border-radius: 12px;
+        border: none;
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+    }
+    
+    .post-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Formulario más destacado */
+    .post-form-card {
+        border-radius: 12px;
+        margin-bottom: 40px;
+    }
+    
+    /* Avatar más grande */
+    .user-avatar {
+        color: #6c757d;
+        font-size: 1.5rem;
+    }
+    
+    /* Contenido ampliado */
+    .post-content {
+        font-size: 1.25rem;
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+    
+    /* Imágenes más controladas pero grandes */
+    .post-image-container {
+        margin: 0 -1rem;
+        border-radius: 8px;
+        overflow: hidden;
+        max-height: 500px;
+    }
+    
+    .post-image {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .post-image:hover {
+        transform: scale(1.02);
+    }
+    
+    /* Botones de reacción más grandes */
+    .reaction-buttons .btn {
+        font-size: 1rem;
+    }
+    
+    .like-btn:hover {
+        background-color: rgba(13, 110, 253, 0.15);
+    }
+    
+    /* Feed vacío más destacado */
+    .empty-feed {
+        padding: 60px 20px;
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        border: 1px dashed #dee2e6;
+    }
+    
+    /* Mejoras para el formulario */
+    .card-body form p {
+        margin-bottom: 1.5rem;
+    }
+    
+    .card-body form p label {
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+    }
+    
+    .card-body form p input,
+    .card-body form p textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #ced4da;
+        border-radius: 8px;
+        font-size: 1.1rem;
+    }
+    
+    .card-body form p textarea {
+        min-height: 150px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .post-content {
+            font-size: 1.1rem;
+        }
+        
+        .reaction-buttons .btn {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+        
+        .post-image-container {
+            max-height: 350px;
+        }
+    }
+</style>
