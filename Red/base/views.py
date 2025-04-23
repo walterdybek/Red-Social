@@ -16,13 +16,7 @@ from django.views.decorators.http import require_http_methods
 
 # Create your views here.
 
-class PostListView(View):
-    def get(self,request,*args, **kwargs):
-        posts = Post.objects.all().order_by('-created')
-        context ={
-            'post_list':posts,
-        }
-        return render (request,'base/post_list.html', context)
+
     
 def loginPage(request):
     if request.user.is_authenticated:
@@ -71,8 +65,9 @@ def home(request):
     rooms = Room.objects.filter(Q(topic__name__icontains=q) | Q(name__icontains=q) | Q(description__contains=q)) # Fetch all Room objects from the database
     topics = Topic.objects.all()[0:5]  # Fetch all Topic objects from the database
     room_count = rooms.count()  # Count the number of rooms
-    room_messages = Message.objects.filter(Q(room__topic__name__icontains=q) | Q(room__name__icontains=q) | Q(room__description__contains=q))  # Fetch all messages related to the rooms
-    context = {'rooms': rooms, 'topics':topics, 'room_count':room_count, 'room_messages':room_messages}  # Context dictionary to pass data to the template
+    room_messages = Message.objects.filter(Q(room__topic__name__icontains=q) | Q(room__name__icontains=q) | Q(room__description__contains=q))
+    posts = Post.objects.all().order_by('-created')  # <- Aquí cargamos los posts  # Fetch all messages related to the rooms
+    context = {'rooms': rooms, 'topics':topics, 'room_count':room_count, 'room_messages':room_messages, 'post_list': posts}  # Context dictionary to pass data to the template
     return render(request, 'base/home.html', context)  # Pass the rooms list to the template
 
 # def room(request,pk):
