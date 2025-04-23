@@ -9,7 +9,7 @@
   --color-light: #eaf3fb;          /* Azul muy claro casi blanco */
   --color-gray: #7f9cb5;           /* Gris azulado */
   --color-light-gray: #a2b8cf;     /* Gris claro azulado */
-  --color-bg: #1f2b3d;             /* Azul oscuro profundo (fondo) */
+  --color-bg: #003865;             /* Azul oscuro profundo (fondo) */
   --color-success: #4caf50;        /* Éxito (verde estándar para contraste) */
   --color-error: #e53935;          /* Error (rojo estándar para contraste) */
 }
@@ -41,13 +41,15 @@ html {
     font-size: 75%;
   }
 }
-
+#caja{
+  border-radius: 12px !important;
+}
 body {
   line-height: 1.6;
   font-weight: 400;
   font-size: 1.5rem;
   color: var(--color-light-gray);
-  background-color: var(--color-bg);
+  background-color: var(--color-bg) !important;
   min-height: 100vh;
 }
 
@@ -58,7 +60,7 @@ img {
 a {
   display: inline-block;
   color: var(--color-main);
-  text-decoration: none;
+  text-decoration: none!important;
 }
 
 /*========== components ==========*/
@@ -272,6 +274,7 @@ a {
 .header > .container {
   display: flex;
   gap: 9.5rem;
+  align-items: center;
 }
 
 .header__logo,

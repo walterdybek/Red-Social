@@ -83,6 +83,7 @@ def home(request):
 
 from django.http import JsonResponse  # Añade esto al inicio del archivo
 
+@login_required(login_url='login') 
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all().order_by('-created')
@@ -244,7 +245,7 @@ class PostListView(View):
             'post_list':posts,
             'form':form,
         }
-        return render(request, 'base/post_feed.html', context)
+        return render(request, 'base/home_feed.html', context)
 
 class AddLike(View):
     def post(self,request,pk,*args,**kwargs):

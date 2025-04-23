@@ -2,7 +2,6 @@
 
 {% block content %}
     <main class="layout layout--3">
-      <a href="{% url 'home_feed' %}">aaa</a>
       <div class="container">
         <!-- Topics Start -->
         {% include 'base/topics_component.html' %}
@@ -40,6 +39,10 @@
                 ></path>
               </svg>
               Create Room
+            </a>
+            <a class="btn btn--main" href="{% url 'home_feed' %}">
+              <i class="bi bi-globe-americas"></i>
+              For You Page
             </a>
           </div>
           {% include 'base/feed_component.html' %}
