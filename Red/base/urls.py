@@ -18,5 +18,7 @@ urlpatterns = [
     path('topics/', views.topicsPage, name='topics'),
     path('activity/', views.activityPage, name='activity'),
     path('api/message/<int:pk>/', views.delete_message_ws, name='delete-message-ws'),
-
+    path('home_feed/', views.PostListView.as_view(), name='home_feed'),
+    path('home_feed/<int:pk>/like', views.AddLike.as_view(), name='like'),
+    path('home_feed/<int:pk>/dislike', views.Dislike.as_view(), name='dislike')
 ]

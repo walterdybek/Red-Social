@@ -51,12 +51,14 @@ class Message(models.Model):
 class Post(models.Model):
     user = user = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
+    image = models.ImageField(upload_to='uploads/post_photos', blank=True, null=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, blank=True, related_name='likes')
+    dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
     class Meta:
         ordering = ['-updated', '-created']
 
-    def __str__(self):
-        return self.body[0:50]
 
-
+    def str(self):
+        return self.body[:50]

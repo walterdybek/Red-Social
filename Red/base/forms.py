@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Room, User
+from .models import Room, User, Post
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
@@ -37,3 +37,15 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    
+class PostForm(ModelForm):
+    body = forms.CharField(
+        label='',
+        widget=forms.Textarea(attrs={
+            'rows':'3',
+            'placeholder':'Say Something...'
+        }))
+    image  = forms.ImageField(required=False) 
+    class Meta:
+        model = Post 
+        fields = ['body', 'image']

@@ -6,10 +6,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required  # Import login_required decorator
 from django.contrib.auth.forms import UserCreationForm  # Import UserCreationForm for user registration
 from .models import Room, Topic, Message, Post , User # Import Room, Topic, Message, and Profile models
-from .forms import RoomForm, UserForm  # Import RoomForm and UserForm for creating and updating rooms and users
+from .forms import RoomForm, UserForm ,  PostForm # Import RoomForm and UserForm for creating and updating rooms and users
 from .forms import CustomUserCreationForm
 from django.views import View
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 import json
 from django.views.decorators.http import require_http_methods
 
@@ -220,3 +220,78 @@ def delete_message_ws(request, pk):
         return JsonResponse({'success': True})
     except Message.DoesNotExist:
         return JsonResponse({'error': 'Mensaje no encontrado'}, status=404)
+
+
+#post 
+class PostListView(View):
+    def get(self, request,*args, **kwargs):
+        posts= Post.objects.all().order_by('-created')
+        form = PostForm()
+        context = {
+            'post_list':posts,
+            'form':form,
+        }
+        return render (request,'base/home_feed.html',context)
+    def post(self, request,*args, **kwargs):
+        posts = Post.objects.all().order_by('-created')# <- Aquí cargamos los posts 
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.user= request.user
+            new_post.save()
+        
+        context = {
+            'post_list':posts,
+            'form':form,
+        }
+        return render(request, 'base/post_feed.html', context)
+
+class AddLike(View):
+    def post(self,request,pk,*args,**kwargs):
+        post = Post.objects.get(pk=pk)
+        is_dislike= False 
+        for dislike in post.dislikes.all():
+            if dislike == request.user:
+                is_dislike = True
+                break
+        if is_dislike:
+            post.dislikes.remove(request.user)
+        is_like= False 
+
+        for like in post.likes.all():
+            if like == request.user:
+                is_like = True
+                break
+        if not is_like:
+            post.likes.add(request.user)
+        if is_like:
+            post.likes.remove(request.user)
+        next = request.POST.get('next', '/')
+        return HttpResponseRedirect(next)
+
+class Dislike(View):
+    def post(self,request,pk,*args,**kwargs):
+        post = Post.objects.get(pk=pk)
+
+        is_like= False 
+
+        for like in post.likes.all():
+            if like == request.user:
+                is_like = True
+                break
+        
+        if is_like:
+            post.likes.remove(request.user)
+
+        is_dislike = False 
+
+        for dislike in post.dislikes.all():
+            if dislike == request.user:
+                is_dislike = True
+                break
+        if not is_dislike:
+            post.dislikes.add(request.user)
+        if is_dislike:
+            post.dislikes.remove(request.user)
+        next = request.POST.get('next', '/')
+        return HttpResponseRedirect(next)
