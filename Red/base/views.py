@@ -234,7 +234,7 @@ class PostListView(View):
         }
         return render (request,'base/home_feed.html',context)
     def post(self, request,*args, **kwargs):
-        posts = Post.objects.all().order_by('-created')# <- Aquí cargamos los posts 
+        posts = Post.objects.all().order_by('-created')
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             new_post = form.save(commit=False)
