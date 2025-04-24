@@ -1,0 +1,454 @@
+/* style_refined.css */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+
+:root {
+  /* Colores originales con pequeños ajustes */
+  --color-main: #71c6dd;
+  --color-main-light: #e1f6fb;
+  --color-dark: #2a2d3b;
+  --color-dark-medium: #3a3f55;
+  --color-dark-light: #4a4f6d;
+  --color-light: #e5e5e5;
+  --color-gray: #8b8b8b;
+  --color-light-gray: #b2bdbd;
+  --color-bg: #2d2d39;
+  --color-success: #5dd693;
+  --color-error: #fc4b0b;
+}
+
+/* Mantenemos toda la estructura base original */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-light);
+  font-family: "DM Sans", sans-serif;
+}
+
+/* Header fiel al original con pequeños refinamientos */
+.header {
+  background-color: var(--color-dark);
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--color-dark-medium);
+}
+
+.header__logo > h1 {
+  font-weight: 700;
+  font-size: 2.2rem;
+  color: var(--color-light);
+  letter-spacing: 0.5px;
+}
+
+/* Topics sidebar - Manteniendo el estilo de la imagen */
+.topics {
+  background-color: var(--color-dark);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid var(--color-dark-medium);
+}
+
+.topics__header h2 {
+  color: var(--color-light);
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-dark-medium);
+}
+
+.topics__list li a {
+  color: var(--color-light-gray);
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.8rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.topics__list li a:hover,
+.topics__list li a.active {
+  color: var(--color-main);
+  background-color: var(--color-dark-medium);
+}
+
+.topics__list li a span {
+  background-color: var(--color-dark-light);
+  color: var(--color-light);
+}
+
+/* Room list - Ajustado al diseño de la imagen */
+.roomList__header {
+  margin-bottom: 2rem;
+}
+
+.roomList__header h2 {
+  color: var(--color-light);
+  font-size: 2rem;
+}
+
+.roomList__header p {
+  color: var(--color-gray);
+  font-size: 1.4rem;
+}
+
+.roomListRoom {
+  background-color: var(--color-dark);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--color-dark-medium);
+}
+
+/* Sección de Instagram integrada */
+.instagram-section {
+  background-color: var(--color-dark);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-top: 2rem;
+  border: 1px solid var(--color-dark-medium);
+}
+
+.instagram-feed {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.instagram-post {
+  aspect-ratio: 1/1;
+  background-color: var(--color-dark-medium);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Mantenemos todos los estilos originales */
+.btn--main {
+  background-color: var(--color-main);
+  color: var(--color-dark);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .layout--3 > .container > div:first-child {
+    display: none;
+  }
+  
+  .instagram-feed {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* ========== Profile Layout ========== */
+.profile-page.layout--2 .container {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+}
+
+.profile-forum-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.instagram-feed-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ========== Instagram Feed ========== */
+.instagram-feed-container {
+  background: var(--color-dark);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid var(--color-dark-medium);
+}
+
+.instagram-title {
+  color: var(--color-light);
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--color-dark-medium);
+}
+
+.instagram-posts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.instagram-post {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--color-dark-medium);
+}
+
+.post-image {
+  width: 100%;
+  height: 100%;
+}
+
+.post-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.instagram-post:hover .post-overlay {
+  opacity: 1;
+}
+
+.post-likes, .post-comments {
+  color: white;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.no-posts {
+  color: var(--color-gray);
+  text-align: center;
+  padding: 1rem;
+  grid-column: 1 / -1;
+}
+
+/* ========== Ajustes de color ========== */
+/* Manteniendo la paleta pero con más contraste */
+:root {
+  --color-main: #6ecadd;  /* Más vibrante */
+  --color-dark: #252836;  /* Un poco más claro */
+  --color-dark-medium: #3a3f55; /* Más definido */
+}
+
+/* Mejorar legibilidad */
+body {
+  color: #f0f0f0;  /* Blanco más puro */
+}
+
+/* Botones más destacados */
+.btn--main {
+  background-color: var(--color-main);
+  color: #1a1a2e;  /* Texto más oscuro para mejor contraste */
+  font-weight: 600;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 900px) {
+  .profile-page.layout--2 .container {
+    grid-template-columns: 1fr;
+  }
+  
+  .instagram-posts {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .instagram-posts {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+/* ========== NUEVOS ESTILOS PARA EL PERFIL ========== */
+/* Añade esto al FINAL de tu CSS existente */
+
+/* Header del perfil */
+.profile-header {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--color-dark);
+  border-radius: 8px;
+  border: 1px solid var(--color-dark-medium);
+}
+
+.profile-info h1 {
+  font-size: 2rem;
+  color: var(--color-light);
+  margin-bottom: 0.5rem;
+}
+
+.bio {
+  color: var(--color-light-gray);
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.stats {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.stats span {
+  color: var(--color-light);
+  font-size: 1.2rem;
+}
+
+/* Pestañas de navegación */
+.profile-tabs {
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--color-dark-medium);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 1rem 2rem;
+  color: var(--color-light-gray);
+  cursor: pointer;
+  font-size: 1.4rem;
+  position: relative;
+}
+
+.tab-btn.active {
+  color: var(--color-main);
+  font-weight: 500;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-main);
+}
+
+/* Contenido de pestañas */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Sección de creación */
+.create-section {
+  background: var(--color-dark);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--color-dark-medium);
+}
+
+.create-section h3 {
+  color: var(--color-main);
+  margin-bottom: 0.8rem;
+  font-size: 1.6rem;
+}
+
+.post-options {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.post-option {
+  background: var(--color-dark-medium);
+  border: 1px solid var(--color-dark-light);
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  color: var(--color-light);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.post-option span {
+  color: var(--color-main);
+  font-weight: bold;
+}
+
+/* Grid de posts */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.post {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--color-dark-medium);
+}
+
+.post img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.post:hover .post-overlay {
+  opacity: 1;
+}
+
+.post-overlay span {
+  color: white;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.no-posts {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--color-gray);
+  padding: 2rem;
+  font-size: 1.4rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .posts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .profile-tabs {
+    justify-content: center;
+  }
+}

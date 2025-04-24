@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-nm#^aqyqf0uu_3udgpr-%$9wu+#rq3@px&q(21hgc#+)g6go6@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -48,12 +48,14 @@ AUTH_USER_MODEL = 'base.User'  # Custom user model
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'Red.urls'
@@ -80,12 +82,11 @@ WSGI_APPLICATION = 'Red.wsgi.application'
 ASGI_APPLICATION = 'Red.asgi.application'
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
         # Para producción usa Redis:
-        # "BACKEND": "channels_redis.core.RedisChannelLayer",
-        # "CONFIG": {
-        #     "hosts": [("127.0.0.1", 6379)],
-        # },
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
     },
 }
 
@@ -103,10 +104,10 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': BASE_DIR / 'db.sqlite3',        # reemplaza con tu nombre de BD
-        'USER': 'tu_usuario',             # reemplaza con tu usuario de Postgre
-        'PASSWORD': 'tu_contraseña',      # reemplaza con tu password
-        'HOST': 'localhost',              # o el host de Azure, etc.
+        'NAME': 'uflow_data',        # reemplaza con tu nombre de BD
+        'USER': 'uflowadmin',             # reemplaza con tu usuario de Postgre
+        'PASSWORD': '#ABC123456789%',      # reemplaza con tu password
+        'HOST': 'uflow-psql-server.postgres.database.azure.com',              # o el host de Azure, etc.
         'PORT': '5432',                   # puerto por defecto de PostgreSQL
     }
 }
@@ -136,7 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Madrid'
 
 USE_I18N = True
 
@@ -152,9 +153,15 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',  # Directory for static files
 ]
 MEDIA_ROOT = BASE_DIR / 'static/media'  # Directory for media files (user-uploaded files)
-#STATIC_ROOT =   # Directory for collected static files
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # Directory for collected static files
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SEGURIDAD ADICIONAL
+SECURE_SSL_REDIRECT  = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE    = True
