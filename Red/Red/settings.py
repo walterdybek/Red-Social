@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-nm#^aqyqf0uu_3udgpr-%$9wu+#rq3@px&q(21hgc#+)g6go6@'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 
 # Application definition
@@ -81,11 +81,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Red.wsgi.application'
 ASGI_APPLICATION = 'Red.asgi.application'
 CHANNEL_LAYERS = {
-    "default": {
-        # Para producción usa Redis:
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [ os.environ['REDIS_URL'] ],
         },
     },
 }
@@ -102,13 +101,13 @@ CHANNEL_LAYERS = {
 # }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'uflow_data',        # reemplaza con tu nombre de BD
-        'USER': 'uflowadmin',             # reemplaza con tu usuario de Postgre
-        'PASSWORD': '#ABC123456789%',      # reemplaza con tu password
-        'HOST': 'uflow-psql-server.postgres.database.azure.com',              # o el host de Azure, etc.
-        'PORT': '5432',                   # puerto por defecto de PostgreSQL
+'default': {
+        'ENGINE':   'django.db.backends.postgresql',
+        'NAME':     os.environ['DB_NAME'],
+        'USER':     os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASSWORD'],
+        'HOST':     os.environ['DB_HOST'],
+        'PORT':     os.environ.get('DB_PORT', '5432'),
     }
 }
 
