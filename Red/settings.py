@@ -101,13 +101,13 @@ CHANNEL_LAYERS = {
 # }
 
 DATABASES = {
-'default': {
-        'ENGINE':   'django.db.backends.postgresql',
-        'NAME':     os.environ['DB_NAME'],
-        'USER':     os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASSWORD'],
-        'HOST':     os.environ['DB_HOST'],
-        'PORT':     os.environ.get('DB_PORT', '5432'),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'DB_NAME': 'uflow_data',        # reemplaza con tu nombre de BD
+        'DB_USER': 'uflowadmin',             # reemplaza con tu usuario de Postgre
+        'DB_PASSWORD': '#ABC123456789%',      # reemplaza con tu password
+        'DB_HOST': 'uflow-psql-server.postgres.database.azure.com',              # o el host de Azure, etc.
+        'DB_PORT': '5432',                   # puerto por defecto de PostgreSQL
     }
 }
 
